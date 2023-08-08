@@ -1,63 +1,56 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './Header'
 import ProductList from './ProductsList';
 import Cart from './Cart';
-import productsData from './Items.json';
 import CoffeePage from './CoffeePage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <App products={productsData} />
+  <App />
 );
 
-function App({products}) {
-  const [showCoffees, setShowCoffees] = useState(true);
+function App() {
+  const [cartLength, setCartLength] = useState(0); 
+  const [currentPage, setCurrentPage] = useState("products");  // "products", "coffee", or "cart"
 
-  const toggleCoffees = () => {
-    setShowCoffees(!showCoffees);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
-  const [cartItems, setCartItems] = useState([]);
-
-  const addToCart = (product) => {
-    const existingItem = cartItems.find((item) => item.id === product.id);
-    if (existingItem) {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        )
-      );
-    } else {
-      setCartItems([...cartItems, { ...product, quantity: 1 }]);
-    }
+  const updateCartLength = (length) => {
+    setCartLength(length); 
   };
 
-  const removeFromCart = (product) => {
-    const existingItem = cartItems.find((item) => item.id === product.id);
-    if (existingItem.quantity === 1) {
-      setCartItems(cartItems.filter((item) => item.id !== product.id));
-    } else {
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item
-        )
-      );
-    }
+  const fetchCartLength = () => {
+    fetch("https://insta-api-api.0vxq7h.easypanel.host/cart")
+      .then(response => response.json())
+      .then(response => {
+        const total = response.reduce((acc, product) => acc + product.quantity, 0);
+        setCartLength(total);
+      })
+      .catch(error => console.log('Erreur lors du chargement des données ', error));
   };
+  useEffect(() => {
+    fetchCartLength();
+  }, []);
 
-  const emptyCart = () => {
-    setCartItems([]);
-  };
+  let pageContent;
+
+  if (currentPage === "products") {
+    pageContent = <ProductList updateCartLength={updateCartLength} />;
+  } else if (currentPage === "coffee") {
+    pageContent = <CoffeePage />;
+  } else if (currentPage === "cart") {
+    pageContent = <Cart onCartLength={updateCartLength} />;
+  }
 
   return (
     <div>
-      <Header cartItems={cartItems} emptyCart={emptyCart} onToggleCoffees={toggleCoffees} showCoffees={showCoffees}/>
-      {showCoffees ? <ProductList products={products} OnAddToCart={addToCart} /> : <CoffeePage />}
-      {/* <ProductList products={products} OnAddToCart={addToCart} /> */}
-      <Cart cartItems={cartItems} removeFromCart={removeFromCart} emptyCart={emptyCart} />
+      <Header onPageChange={handlePageChange} currentPage={currentPage} cartLength={cartLength}/>
+      {pageContent}
     </div>
   );
 }

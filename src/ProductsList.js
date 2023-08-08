@@ -4,7 +4,7 @@ import ProductCategories from './ProductCategories';
 import ProductColors from './ProductColors';
 
 
-const ProductList = ({OnAddToCart}) => {
+function ProductList({ updateCartLength }) {
   
     const [products, setProducts] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
@@ -49,6 +49,8 @@ const ProductList = ({OnAddToCart}) => {
       return categoryMatch && colorMatch && priceMatch;
     });
 
+   
+
   return (
     <div className="product-list">
        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
@@ -92,16 +94,14 @@ const ProductList = ({OnAddToCart}) => {
           </div> : null}
         {filteredProducts.map((product) => (
           <Products
-            key={product.id}
+            id={product.id}
             name={product.name}
             description={product.description}
             price={product.price/100}
             image={product.image}
             category={product.category?.name}
             color={product.color.name}
-            onAddToCart={() =>
-              OnAddToCart(product)
-            }
+            updateCartLength={updateCartLength}
           />
         ))}
       </div>

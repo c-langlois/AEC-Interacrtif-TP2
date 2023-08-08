@@ -1,0 +1,24 @@
+[
+    {
+      "id": 1,
+      "nom": "Amethyste",
+      "image": "/images/Amethyste.jpg",
+      "description": "Elle favorise la manifestation et la réalisation profonde, car sa principale priorité est de vous aider à atteindre vos objectifs de vie. Le cristal agit comme un aimant qui attire les opportunités, les informations, les outils et même les personnes nécessaires pour atteindre vos objectifs et réaliser votre plein potentiel.",
+      "prix": 32.99
+    },
+    {
+      "id": 2,
+      "nom": "Larimar",
+      "image": "/images/Larimar.jpg",
+      "description": "Elle connecte le physique avec le non physique. La Larimar est une pierre très puissante qui facilite la communication. Cette pierre est idéale pour harmoniser nos relations et surmonter les blocages qui pourraient nous empêcher d’être heureux.Elle vous apportera un bien-être assuré dans votre quotidien ",
+      "prix": 49.99
+    },
+    {
+      "id": 3,
+      "nom": "Malchite",
+      "image": "/images/Malchite.jpg",
+      "description": "La malachite est connue pour favoriser la transformation et les nouveaux départs. Elle élève les vibrations de son environnement, encourage la croissance personnelle et la sagesse, et amplifie votre connexion avec la nature. En outre, elle ouvre votre cœur en encourageant la compassion envers tous les êtres vivants.",
+      "prix": 79.99
+    }
+  ]
+   
